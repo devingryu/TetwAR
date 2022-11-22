@@ -18,6 +18,7 @@ namespace TAR
         }
         public virtual Color32 color { get; private set; } = Color.white;
         private Grid grid;
+        public bool isCurrent = true;
         public Block Init(Vector3Int coord)
         {
             grid = GameManager.Inst.map.grid;
