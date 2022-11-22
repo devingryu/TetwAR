@@ -6,13 +6,24 @@ namespace TAR
 {
     public class Block : MonoBehaviour
     {
-        public Vector3Int coord;
+        private Vector3Int coord;
+        public Vector3Int Coord {
+            get => coord;
+            set {
+                coord = value;
+                transform.localPosition = grid.Coord2Pos(coord);
+                grid.SetBlocks(coord,this);
+            }
+        }
         public virtual Color32 color { get; private set; } = Color.white;
-        public void Init(Vector3Int coord)
+        private Grid grid;
+        public Block Init(Vector3Int coord)
         {
-            this.coord = coord;
-                
+            grid = GameManager.Inst.map.grid;
+            Coord = coord;
+            
             OnInit();
+            return this;
         }
         protected virtual void OnInit() {}
     }

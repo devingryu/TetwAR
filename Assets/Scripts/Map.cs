@@ -7,14 +7,20 @@ namespace TAR
     public class Map : MonoBehaviour
     {
         public Grid grid;
-        private void Awake() {
-            
-        }
+        [HideInInspector]
+        public BlockGroup current;
+        [HideInInspector]
+        public int next;
+        [SerializeField]
+        private Transform blockParent;
 
-        // Update is called once per frame
-        void Update()
+        private void Awake() {
+            grid.Init(new(10,15,10));
+        }
+        public void CreateNew()
         {
-        
+            current = new SingleBlockGroup();
+            current.Init(blockParent);
         }
     }
 }

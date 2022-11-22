@@ -7,8 +7,10 @@ namespace TAR
     public class GameManager : Singleton<GameManager>
     {
         public Map map;
-        private void Awake() {
-            
+        
+        private void Start()
+        {
+            map.CreateNew();
         }
 
         // Update is called once per frame
