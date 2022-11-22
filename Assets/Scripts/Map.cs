@@ -22,5 +22,9 @@ namespace TAR
             current = new SingleBlockGroup();
             current.Init(blockParent);
         }
+        public void DownOne()
+        {
+            current.DownOne();
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace TAR
         public Vector3Int Coord {
             get => coord;
             set {
+                if(coord != null) grid.UnsetBlocks(coord);
                 coord = value;
                 transform.localPosition = grid.Coord2Pos(coord);
                 grid.SetBlocks(coord,this);

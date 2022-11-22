@@ -10,8 +10,10 @@ namespace TAR
         protected GameObject baseBlock;
         protected abstract Vector3Int[] initCoords {get;}
         protected Transform blockParent;
+        private Grid grid;
         public void Init(Transform blockParent) 
         {
+            grid = GameManager.Inst.map.grid;
             baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
             this.blockParent = blockParent;
             OnInit();
@@ -24,6 +26,21 @@ namespace TAR
                 blocks[i] = GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(initCoords[i]);
             }
         }
-        
+        public void DownOne()
+        {
+            Vector3Int up = Vector3Int.up;
+            foreach(var b in blocks)
+            {
+                if ((b.Coord+up).y >= grid.GridBound.y || grid.GetBlocks(b.Coord+up) != null )
+                {
+                    GameManager.Inst.OnTurnEnd();
+                    return;
+                }
+            }
+            foreach(var b in blocks)
+            {
+                b.Coord += up;
+            }
+        }
     }
 }

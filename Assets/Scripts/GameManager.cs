@@ -7,16 +7,26 @@ namespace TAR
     public class GameManager : Singleton<GameManager>
     {
         public Map map;
+        public float timer = 0f;
+        public float targetTime = 0.3f;
         
         private void Start()
         {
             map.CreateNew();
         }
 
-        // Update is called once per frame
         void Update()
         {
-        
+            timer += Time.deltaTime;
+            if(timer >= targetTime)
+            {
+                timer = 0f;
+                map.DownOne();
+            }
+        }
+        public void OnTurnEnd()
+        {
+            map.CreateNew();
         }
     }
 }
