@@ -7,8 +7,8 @@ namespace TAR
     public class GameManager : Singleton<GameManager>
     {
         public Map map;
-        public float timer = 0f;
-        public float targetTime = 0.3f;
+        private float timer = 0f;
+        private float targetTime = 1f;
         
         private void Start()
         {
