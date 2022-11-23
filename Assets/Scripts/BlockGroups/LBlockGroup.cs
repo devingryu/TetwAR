@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace TAR
 {
-    public class SingleBlockGroup : BlockGroup
+    public class LBlockGroup : BlockGroup
     {
-        private Vector3Int[] initCoords = new Vector3Int[]{new(0,1,0),new(0,0,0),new(0,-1,0)};
+        private Vector3Int[] initCoords = new Vector3Int[]{new(1,1,0),new(0,1,0),new(0,0,0),new(0,-1,0)};
         protected override Vector3Int[] InitCoords {
             get => initCoords;
             set {

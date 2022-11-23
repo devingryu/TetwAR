@@ -8,7 +8,7 @@ namespace TAR
     {
         public Map map;
         private float timer = 0f;
-        private float targetTime = 1f;
+        private float targetTime = 3f;
         
         private void Start()
         {
@@ -27,6 +27,21 @@ namespace TAR
         public void OnTurnEnd()
         {
             map.CreateNew();
+        }
+        [ContextMenu("XY회전")]
+        void XYClock()
+        {
+            map.current.Rotate(BlockGroup.Rotation.XYClock);
+        }
+        [ContextMenu("XZ회전")]
+        void XZClock()
+        {
+            map.current.Rotate(BlockGroup.Rotation.XZClock);
+        }
+        [ContextMenu("YZ회전")]
+        void YZClock()
+        {
+            map.current.Rotate(BlockGroup.Rotation.YZClock);
         }
     }
 }
