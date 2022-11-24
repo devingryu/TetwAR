@@ -11,7 +11,7 @@ namespace TAR
         protected abstract Vector3Int[] InitCoords {get;set;}
         protected abstract Vector3Int CenterPos {get;set;}
         protected Transform blockParent;
-        private Grid grid;
+        protected Grid grid;
         public void Init(Transform blockParent) 
         {
             grid = GameManager.Inst.map.grid;
@@ -36,9 +36,9 @@ namespace TAR
                 for(int i=0;i<blocks.Count;i++)
                     blocks[i].Coord = CenterPos + InitCoords[i];
             } else {
+                for(int i=0;i<blocks.Count;i++)
+                    grid.SetBlocks(blocks[i].Coord,blocks[i]);
                 GameManager.Inst.OnTurnEnd();
-                foreach(var it in blocks)
-                    it.isCurrent = false;
                 return;
             }
         }
@@ -49,7 +49,7 @@ namespace TAR
                     return false;
             return true;
         }
-        public void Rotate(Rotation r)
+        public virtual void Rotate(Rotation r)
         {
             var newCoords = new Vector3Int[InitCoords.Length];
             switch(r)

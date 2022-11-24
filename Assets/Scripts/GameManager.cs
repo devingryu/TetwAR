@@ -8,7 +8,7 @@ namespace TAR
     {
         public Map map;
         private float timer = 0f;
-        private float targetTime = 3f;
+        private float targetTime = 0.7f;
         
         private void Start()
         {
