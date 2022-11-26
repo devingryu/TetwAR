@@ -16,13 +16,22 @@ namespace TAR
                 if(!isCurrent) grid.SetBlocks(coord,this);
             }
         }
-        public virtual Color32 color { get; private set; } = Color.white;
+        public virtual Color color { get; private set; } = Color.white;
         private Grid grid;
         public bool isCurrent = true;
-        public Block Init(Vector3Int coord)
+        public bool isHint;
+        public Block Init(Vector3Int coord, Color color, bool isHint = false)
         {
             grid = GameManager.Inst.map.grid;
             Coord = coord;
+            this.isHint = isHint;
+            this.color = isHint?new Color(color.r,color.g,color.b,0.3f):color;
+
+            var renderer = GetComponent<MeshRenderer>();
+            var newMat = new Material(renderer.material.shader);
+            newMat.SetTexture("_MainTex", renderer.material.GetTexture("_MainTex"));
+            newMat.color = this.color;
+            renderer.material = newMat;
             
             OnInit();
             return this;

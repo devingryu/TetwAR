@@ -92,6 +92,7 @@ namespace TAR
             ICoords = iNewCoords;
             for(int i=0;i<blocks.Count;i++)
                 blocks[i].Coord = CenterPos + InitCoords[i];
+            refreshHint();
         }
     }
 }

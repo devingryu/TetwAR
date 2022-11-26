@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace TAR
-{
+{//231 94 216
+// 149 195 72
+// 201 67 74
+// 241 211 87
+// 96 78 179
     public abstract class BlockGroup 
     {
         public List<Block> blocks;
+        public List<Block> hintBlocks;
         protected GameObject baseBlock;
         protected abstract Vector3Int[] InitCoords {get;set;}
         protected abstract Vector3Int CenterPos {get;set;}
+        protected virtual Color blockColor {get;set;} = Color.white;
         protected Transform blockParent;
         protected Grid grid;
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
+
         public void Init(Transform blockParent) 
         {
             grid = GameManager.Inst.map.grid;
@@ -25,8 +33,9 @@ namespace TAR
             blocks = new List<Block>(InitCoords.Length);
             for(int i=0;i<InitCoords.Length;i++)
             {
-                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i]));
+                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
             }
+            refreshHint();
             //blocks.Sort((a,b) => (a.Coord.y > b.Coord.y) ? -1 : 1);
         }
         public void DownOne()
@@ -42,6 +51,7 @@ namespace TAR
                 GameManager.Inst.OnTurnEnd();
                 return;
             }
+            refreshHint();
         }
         protected bool CheckIfSane(List<Block> lst, Vector3Int disp)
         {
@@ -69,6 +79,7 @@ namespace TAR
             CenterPos += d;
             for(int i=0;i<blocks.Count;i++)
                 blocks[i].Coord = newCoords[i];
+            refreshHint();
         }
         public virtual void Rotate(Rotation r)
         {
@@ -139,9 +150,36 @@ namespace TAR
             InitCoords = newCoords;
             for(int i=0;i<blocks.Count;i++)
                 blocks[i].Coord = CenterPos + InitCoords[i];
+            refreshHint();
         }
         public enum Rotation {
             XYClock,XYCounterClock,XZClock,XZCounterClock,YZClock,YZCounterClock
+        }
+        protected void refreshHint()
+        {
+            if(hintBlocks == null)
+            {
+                hintBlocks = new List<Block>(InitCoords.Length);
+                for(int i=0;i<InitCoords.Length;i++)
+                {
+                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
+                }
+            }
+            var up = Vector3Int.up;
+            var blockCoords = blocks.Select( b => b.Coord );
+            for(int i=1;;i++)
+            {
+                if(!CheckIfSane(blocks, up * i))
+                {
+                    for(int j=0;j<hintBlocks.Count;j++)
+                    {
+                        var p = InitCoords[j] + CenterPos + up * (i-1);
+                        hintBlocks[j].Coord = p;
+                        hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
+                    }
+                    break;
+                }
+            }
         }
     }
 }
