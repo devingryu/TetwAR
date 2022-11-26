@@ -12,6 +12,7 @@ namespace TAR
         protected abstract Vector3Int CenterPos {get;set;}
         protected Transform blockParent;
         protected Grid grid;
+        protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
         public void Init(Transform blockParent) 
         {
             grid = GameManager.Inst.map.grid;
@@ -42,10 +43,17 @@ namespace TAR
                 return;
             }
         }
-        private bool CheckIfSane(List<Block> lst, Vector3Int disp)
+        protected bool CheckIfSane(List<Block> lst, Vector3Int disp)
         {
             foreach(var b in lst)
-                if ((b.Coord+disp).y >= grid.GridBound.y || grid.GetBlocks(b.Coord+disp) != null)
+                if (!grid.isCoordSane(b.Coord+disp))
+                    return false;
+            return true;
+        }
+        protected bool CheckIfSane(Vector3Int[] coords, Vector3Int disp)
+        {
+            foreach(var c in coords)
+                if (!grid.isCoordSane(c + disp))
                     return false;
             return true;
         }
@@ -64,6 +72,7 @@ namespace TAR
         }
         public virtual void Rotate(Rotation r)
         {
+            var flag = false;
             var newCoords = new Vector3Int[InitCoords.Length];
             switch(r)
             {
@@ -71,7 +80,7 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(-InitCoords[i].y,InitCoords[i].x,InitCoords[i].z);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
@@ -79,7 +88,7 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(InitCoords[i].y,-InitCoords[i].x,InitCoords[i].z);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
@@ -87,7 +96,7 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(InitCoords[i].z,InitCoords[i].y,-InitCoords[i].x);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
@@ -95,7 +104,7 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(-InitCoords[i].z,InitCoords[i].y,InitCoords[i].x);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
@@ -103,7 +112,7 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(InitCoords[i].x,-InitCoords[i].z,InitCoords[i].y);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
@@ -111,10 +120,21 @@ namespace TAR
                     for(int i=0;i<InitCoords.Length;i++)
                     {
                         var c = new Vector3Int(InitCoords[i].x,InitCoords[i].z,-InitCoords[i].y);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                     }
                 break;
+            }
+            if(flag)
+            {
+                foreach(var m in rotationMargin)
+                    if(CheckIfSane(newCoords,CenterPos+m))
+                    {
+                        CenterPos += m;
+                        flag = false;
+                        break;
+                    }
+                if(flag) return;
             }
             InitCoords = newCoords;
             for(int i=0;i<blocks.Count;i++)

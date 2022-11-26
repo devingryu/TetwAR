@@ -11,6 +11,7 @@ namespace TAR
 
         public override void Rotate(Rotation r)
         {
+            bool flag = false;
             var iNewCoords = new Vector3[InitCoords.Length];
             var newCoords = new Vector3Int[InitCoords.Length];
             switch(r)
@@ -20,7 +21,7 @@ namespace TAR
                     {
                         var ic = new Vector3(-ICoords[i].y,ICoords[i].x,ICoords[i].z);
                         var c = new Vector3Int((int)(-ICoords[i].y+Margin.x),(int)(ICoords[i].x+Margin.y),(int)(ICoords[i].z+Margin.z));
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
@@ -30,7 +31,7 @@ namespace TAR
                     {
                         var c = new Vector3Int((int)(ICoords[i].y+Margin.x),(int)(-ICoords[i].x+Margin.y),(int)(ICoords[i].z+Margin.z));
                         var ic = new Vector3(ICoords[i].y,-ICoords[i].x,ICoords[i].z);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
@@ -40,7 +41,7 @@ namespace TAR
                     {
                         var c = new Vector3Int((int)(ICoords[i].z+Margin.x),(int)(ICoords[i].y+Margin.y),(int)(-ICoords[i].x+Margin.z));
                         var ic = new Vector3(ICoords[i].z,ICoords[i].y,-ICoords[i].x);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
@@ -50,7 +51,7 @@ namespace TAR
                     {
                         var c = new Vector3Int((int)(-ICoords[i].z+Margin.x),(int)(ICoords[i].y+Margin.y),(int)(ICoords[i].x+Margin.z));
                         var ic = new Vector3(-ICoords[i].z,ICoords[i].y,ICoords[i].x);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
@@ -60,7 +61,7 @@ namespace TAR
                     {
                         var c = new Vector3Int((int)(ICoords[i].x+Margin.x),(int)(-ICoords[i].z+Margin.y),(int)(ICoords[i].y+Margin.z));
                         var ic = new Vector3(ICoords[i].x,-ICoords[i].z,ICoords[i].y);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
@@ -70,11 +71,22 @@ namespace TAR
                     {
                         var c = new Vector3Int((int)(ICoords[i].x+Margin.x),(int)(ICoords[i].z+Margin.y),(int)(-ICoords[i].y+Margin.z));
                         var ic = new Vector3(ICoords[i].x,ICoords[i].z,-ICoords[i].y);
-                        if(!grid.isCoordSane(CenterPos+c)) return;
+                        if(!grid.isCoordSane(CenterPos+c)) flag = true;
                         newCoords[i] = c;
                         iNewCoords[i] = ic;
                     }
                 break;
+            }
+            if(flag)
+            {
+                foreach(var m in rotationMargin)
+                    if(CheckIfSane(newCoords,CenterPos+m))
+                    {
+                        CenterPos += m;
+                        flag = false;
+                        break;
+                    }
+                if(flag) return;
             }
             InitCoords = newCoords;
             ICoords = iNewCoords;
