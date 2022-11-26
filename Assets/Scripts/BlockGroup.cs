@@ -49,6 +49,19 @@ namespace TAR
                     return false;
             return true;
         }
+        public void Translate(Vector3Int d)
+        {
+            var newCoords = new Vector3Int[InitCoords.Length];
+            for(int i=0;i<blocks.Count;i++)
+            {
+                var c = blocks[i].Coord + d;
+                if(!grid.isCoordSane(c)) return;
+                newCoords[i] = c;
+            }
+            CenterPos += d;
+            for(int i=0;i<blocks.Count;i++)
+                blocks[i].Coord = newCoords[i];
+        }
         public virtual void Rotate(Rotation r)
         {
             var newCoords = new Vector3Int[InitCoords.Length];

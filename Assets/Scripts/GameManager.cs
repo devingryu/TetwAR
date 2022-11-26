@@ -29,19 +29,22 @@ namespace TAR
             map.CreateNew();
         }
         [ContextMenu("XY회전")]
-        void XYClock()
+        public void XYClock()
         {
             map.current.Rotate(BlockGroup.Rotation.XYClock);
         }
         [ContextMenu("XZ회전")]
-        void XZClock()
+        public void XZClock()
         {
             map.current.Rotate(BlockGroup.Rotation.XZClock);
         }
         [ContextMenu("YZ회전")]
-        void YZClock()
+        public void YZClock()
         {
             map.current.Rotate(BlockGroup.Rotation.YZClock);
         }
+        public void Translate(Vector3Int d)
+            => map.current.Translate(d);
+        
     }
 }
