@@ -19,7 +19,7 @@ namespace TAR
         }
         public void CreateNew()
         {
-            current = new SquareBlockGroup();
+            current = new TFBlockGroup();
             current.Init(blockParent);
         }
         public void DownOne()
