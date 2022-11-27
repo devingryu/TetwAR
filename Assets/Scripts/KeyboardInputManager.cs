@@ -23,6 +23,8 @@ namespace TAR
                 gm.XYClock();
             } if(Input.GetKeyDown(KeyCode.C)) {
                 gm.XZClock();
+            } if(Input.GetKeyDown(KeyCode.Space)) {
+                gm.map.current.DownFull();
             }
 
             tTimer += Time.deltaTime;

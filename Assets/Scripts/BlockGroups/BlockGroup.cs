@@ -38,6 +38,18 @@ namespace TAR
             refreshHint();
             //blocks.Sort((a,b) => (a.Coord.y > b.Coord.y) ? -1 : 1);
         }
+        public void DownFull()
+        {
+            var maxDown = checkMaxDownY() * Vector3Int.up;
+            
+            for(int i=0;i<blocks.Count;i++){
+                blocks[i].Coord+=maxDown;
+                grid.SetBlocks(blocks[i].Coord,blocks[i]);
+            }
+            foreach(var b in hintBlocks)
+                Transform.Destroy(b.gameObject);
+            GameManager.Inst.OnTurnEnd();
+        }
         public void DownOne()
         {
             Vector3Int up = Vector3Int.up;
@@ -157,6 +169,17 @@ namespace TAR
         public enum Rotation {
             XYClock,XYCounterClock,XZClock,XZCounterClock,YZClock,YZCounterClock
         }
+        private int checkMaxDownY()
+        {
+            var up = Vector3Int.up;
+            for(int i=1;;i++)
+            {
+                if(!CheckIfSane(blocks, up * i))
+                {
+                    return i-1;
+                }
+            }
+        }
         protected void refreshHint()
         {
             if(hintBlocks == null)
@@ -167,21 +190,15 @@ namespace TAR
                     hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
                 }
             }
-            var up = Vector3Int.up;
             var blockCoords = blocks.Select( b => b.Coord );
-            for(int i=1;;i++)
+            var maxDown = checkMaxDownY();
+            for(int j=0;j<hintBlocks.Count;j++)
             {
-                if(!CheckIfSane(blocks, up * i))
-                {
-                    for(int j=0;j<hintBlocks.Count;j++)
-                    {
-                        var p = InitCoords[j] + CenterPos + up * (i-1);
-                        hintBlocks[j].Coord = p;
-                        hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
-                    }
-                    break;
-                }
+                var p = InitCoords[j] + CenterPos + Vector3Int.up * (maxDown-1);
+                hintBlocks[j].Coord = p;
+                hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
             }
+
         }
     }
 }
