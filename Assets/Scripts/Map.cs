@@ -15,7 +15,7 @@ namespace TAR
         private Transform blockParent;
 
         private void Awake() {
-            grid.Init(new(10,15,10));
+            grid.Init(new(6,15,6));
         }
         public void CreateNew()
         {

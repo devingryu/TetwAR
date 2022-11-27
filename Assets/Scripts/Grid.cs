@@ -12,16 +12,24 @@ namespace TAR
         private Vector3 GridZeroPoint; // 좌하단이 Zero
         private Vector3 BlockShape;
         private bool en = false;
+        [SerializeField]
+        private Transform baseParent;
         public void Init(Vector3Int bound)
         {
             GridBound = bound;
             blocks = new Block[bound.x, bound.y, bound.z];
-            BlockShape = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock").transform.localScale;
+            var baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
+            BlockShape = baseBlock.transform.localScale;
 
             float[] zeroPoint = new float[3];
             for (int i = 0; i < 3; i++)
                 zeroPoint[i] = GridCenterPoint[i] - ((bound[i] % 2 == 0) ? (bound[i] / 2 - 0.5f) : (bound[i] / 2)) * BlockShape[i];
             GridZeroPoint = new Vector3(zeroPoint[0], BlockShape[1] * (bound.y - 1), zeroPoint[2]);
+
+            Color color  = new Color32(74,47,0,255);
+            for(int i=0;i<bound.x;i++)
+                for(int j=0;j<bound.z;j++)
+                    Instantiate(baseBlock,Vector3.zero,Quaternion.identity,baseParent).GetComponent<Block>().Init(new(i,bound.y,j),color);
 
             en = true;
         }

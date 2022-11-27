@@ -48,6 +48,8 @@ namespace TAR
             } else {
                 for(int i=0;i<blocks.Count;i++)
                     grid.SetBlocks(blocks[i].Coord,blocks[i]);
+                foreach(var b in hintBlocks)
+                    Transform.Destroy(b.gameObject);
                 GameManager.Inst.OnTurnEnd();
                 return;
             }
