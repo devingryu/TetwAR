@@ -26,6 +26,7 @@ namespace TAR
         }
         public void OnTurnEnd()
         {
+            map.grid.CheckRemove();
             map.CreateNew();
         }
         [ContextMenu("XY회전")]

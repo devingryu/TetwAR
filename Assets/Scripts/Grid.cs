@@ -56,10 +56,63 @@ namespace TAR
                 (0 <= coord.z && coord.z < GridBound.z) &&
                 blocks[coord.x, coord.y, coord.z] == null
             );
-        // public void MoveBlock(Vector3Int coord, Vector3Int newCoord)
-        // {
-        //     blocks[newCoord.x,newCoord.y,newCoord.z] = blocks[coord.x,coord.y,coord.z];
-        //     blocks[coord.x,coord.y,coord.z] = null;
-        // }
+        public void MoveBlock(Vector3Int coord, Vector3Int newCoord)
+        {
+            blocks[newCoord.x,newCoord.y,newCoord.z] = blocks[coord.x,coord.y,coord.z];
+            blocks[coord.x,coord.y,coord.z] = null;
+            blocks[newCoord.x, newCoord.y, newCoord.z].Coord = newCoord;
+        }
+
+        public void CheckRemove()
+        {
+            for(int i = 0; i < GridBound.y; i++)
+            {
+                if (CheckFloor(i))
+                    RemoveFloor(i);
+            }
+        }
+
+        public bool CheckFloor(int y)
+        {
+            for (int j = 0; j < GridBound.x; j++)
+            {
+                for (int k = 0; k < GridBound.z; k++)
+                {
+                    if (blocks[j, y, k] == null)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public void RemoveFloor(int y)
+        {
+            for (int j = 0; j < GridBound.x; j++)
+            {
+                for (int k = 0; k < GridBound.z; k++)
+                {
+                    Destroy(blocks[j, y, k].gameObject);
+                    UnsetBlocks(new Vector3Int(j, y, k));
+                }
+            }
+            DownUpperFloor(y);
+        }
+
+        public void DownUpperFloor(int y)
+        {
+            for (int i = y - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < GridBound.x; j++)
+                {
+                    for (int k = 0; k < GridBound.z; k++)
+                    {
+                        if(blocks[j, i, k]!=null)
+                        {
+                            MoveBlock(blocks[j, i, k].Coord, blocks[j, i, k].Coord + new Vector3Int(0, 1, 0));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
