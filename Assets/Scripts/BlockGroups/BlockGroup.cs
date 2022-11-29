@@ -194,7 +194,7 @@ namespace TAR
             var maxDown = checkMaxDownY();
             for(int j=0;j<hintBlocks.Count;j++)
             {
-                var p = InitCoords[j] + CenterPos + Vector3Int.up * (maxDown-1);
+                var p = InitCoords[j] + CenterPos + Vector3Int.up * (maxDown);
                 hintBlocks[j].Coord = p;
                 hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
             }
