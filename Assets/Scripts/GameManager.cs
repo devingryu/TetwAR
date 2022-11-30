@@ -75,5 +75,15 @@ namespace TAR
             if (map == null) return;
             map.current.Translate(Vector3Int.left); ;
         }
+        public void DownFull()
+        {
+            if (map == null) return;
+            map.current.DownFull();
+        }
+        public void DownOne()
+        {
+            if (map == null) return;
+            map.current.DownOne();
+        }
     }
 }
