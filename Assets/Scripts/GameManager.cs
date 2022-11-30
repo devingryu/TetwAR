@@ -10,13 +10,16 @@ namespace TAR
         private float timer = 0f;
         private float targetTime = 0.7f;
         
-        private void Start()
+        public void Init(Map map) 
         {
-            map.CreateNew();
+            this.map = map;
+            Debug.Log("Map attached!");
+            //map.CreateNew();
         }
 
         void Update()
         {
+            if (map == null) return;
             timer += Time.deltaTime;
             if(timer >= targetTime)
             {
@@ -32,20 +35,25 @@ namespace TAR
         [ContextMenu("XY회전")]
         public void XYClock()
         {
+            if(map == null) return;
             map.current.Rotate(BlockGroup.Rotation.XYClock);
         }
         [ContextMenu("XZ회전")]
         public void XZClock()
         {
+            if(map == null) return;
             map.current.Rotate(BlockGroup.Rotation.XZClock);
         }
         [ContextMenu("YZ회전")]
         public void YZClock()
         {
+            if(map == null) return;
             map.current.Rotate(BlockGroup.Rotation.YZClock);
         }
         public void Translate(Vector3Int d)
-            => map.current.Translate(d);
-        
+        {
+            if(map == null) return;
+            map.current.Translate(d);
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace TAR
             blocks = new List<Block>(InitCoords.Length);
             for(int i=0;i<InitCoords.Length;i++)
             {
-                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
+                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
             }
             refreshHint();
             //blocks.Sort((a,b) => (a.Coord.y > b.Coord.y) ? -1 : 1);
@@ -187,7 +187,7 @@ namespace TAR
                 hintBlocks = new List<Block>(InitCoords.Length);
                 for(int i=0;i<InitCoords.Length;i++)
                 {
-                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, Quaternion.identity, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
+                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
                 }
             }
             var blockCoords = blocks.Select( b => b.Coord );
