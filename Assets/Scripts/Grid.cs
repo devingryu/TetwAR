@@ -29,7 +29,7 @@ namespace TAR
             Color color  = new Color32(74,47,0,255);
             for(int i=0;i<bound.x;i++)
                 for(int j=0;j<bound.z;j++)
-                    Instantiate(baseBlock,Vector3.zero,Quaternion.identity,baseParent).GetComponent<Block>().Init(new(i,bound.y,j),color);
+                    Instantiate(baseBlock,Vector3.zero,Quaternion.identity,baseParent).GetComponent<Block>().Init(new(i,bound.y,j),color,colliderEnabled: true);
 
             en = true;
         }

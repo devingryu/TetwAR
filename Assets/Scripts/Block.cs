@@ -20,12 +20,21 @@ namespace TAR
         private Grid grid;
         public bool isCurrent = true;
         public bool isHint;
-        public Block Init(Vector3Int coord, Color color, bool isHint = false)
+        private bool colliderEnabled = false;
+        public bool ColliderEnabled {
+            get => colliderEnabled;
+            set {
+                colliderEnabled = value;
+                gameObject.GetComponent<BoxCollider>().enabled = value;
+            }
+        }
+        public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false)
         {
             grid = GameManager.Inst.map.grid;
             Coord = coord;
             this.isHint = isHint;
             this.color = isHint?new Color(color.r,color.g,color.b,0.3f):color;
+            ColliderEnabled = colliderEnabled;
 
             var renderer = GetComponent<MeshRenderer>();
             var newMat = new Material(renderer.material.shader);

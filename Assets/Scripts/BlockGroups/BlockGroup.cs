@@ -16,6 +16,14 @@ namespace TAR
         protected GameObject baseBlock;
         protected abstract Vector3Int[] InitCoords {get;set;}
         protected abstract Vector3Int CenterPos {get;set;}
+        protected Vector3Int cameraPoint;
+        public Vector3Int CameraPoint {
+            get => cameraPoint;
+            set {
+                cameraPoint = value;
+                refreshHint();
+            }
+        }
         protected virtual Color blockColor {get;set;} = Color.white;
         protected Transform blockParent;
         protected Grid grid;
@@ -35,7 +43,7 @@ namespace TAR
             {
                 blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
             }
-            refreshHint();
+            //refreshHint();
             //blocks.Sort((a,b) => (a.Coord.y > b.Coord.y) ? -1 : 1);
         }
         public void DownFull()
@@ -44,6 +52,7 @@ namespace TAR
             
             for(int i=0;i<blocks.Count;i++){
                 blocks[i].Coord+=maxDown;
+                blocks[i].ColliderEnabled = true;
                 grid.SetBlocks(blocks[i].Coord,blocks[i]);
             }
             foreach(var b in hintBlocks)
@@ -65,7 +74,7 @@ namespace TAR
                 GameManager.Inst.OnTurnEnd();
                 return;
             }
-            refreshHint();
+            //refreshHint();
         }
         protected bool CheckIfSane(List<Block> lst, Vector3Int disp)
         {
@@ -169,14 +178,29 @@ namespace TAR
         public enum Rotation {
             XYClock,XYCounterClock,XZClock,XZCounterClock,YZClock,YZCounterClock
         }
-        private int checkMaxDownY()
+        private int checkMaxDownY(bool isPoint = false)
         {
             var up = Vector3Int.up;
-            for(int i=1;;i++)
-            {
-                if(!CheckIfSane(blocks, up * i))
+            if(isPoint) {
+                Vector3Int[] p = new Vector3Int[4];
+                for(int i=0;i<4;i++)
                 {
-                    return i-1;
+                    p[i] = InitCoords[i] + CameraPoint;
+                }
+                for(int i=1;;i++)
+                {
+                    if(!CheckIfSane(blocks, up * i))
+                    {
+                        return i-1;
+                    }
+                }
+            } else {
+                for(int i=1;;i++)
+                {
+                    if(!CheckIfSane(blocks, up * i))
+                    {
+                        return i-1;
+                    }
                 }
             }
         }
@@ -191,14 +215,19 @@ namespace TAR
                 }
             }
             var blockCoords = blocks.Select( b => b.Coord );
-            var maxDown = checkMaxDownY();
+            var maxDown = checkMaxDownY(true);
+            Debug.Log($"maxDown:{maxDown}");
             for(int j=0;j<hintBlocks.Count;j++)
             {
-                var p = InitCoords[j] + CenterPos + Vector3Int.up * (maxDown);
+                var p = InitCoords[j] + CameraPoint/* + Vector3Int.up * (maxDown)*/;
                 hintBlocks[j].Coord = p;
                 hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
             }
 
+        }
+        protected Vector3Int GetBestFit(Vector3Int centerPoint)
+        {
+            
         }
     }
 }

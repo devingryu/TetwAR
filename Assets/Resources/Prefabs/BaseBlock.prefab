@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4173562157624152221}
   - component: {fileID: 7478995738200454509}
   - component: {fileID: 6481029656392595597}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BaseBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ BoxCollider:
   m_GameObject: {fileID: 4956138062162597052}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -111,3 +111,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCurrent: 1
+  isHint: 0
