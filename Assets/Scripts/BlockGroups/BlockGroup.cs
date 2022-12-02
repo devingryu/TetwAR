@@ -78,8 +78,10 @@ namespace TAR
                 for(int i=0;i<blocks.Count;i++)
                     blocks[i].Coord = CenterPos + InitCoords[i];
             } else {
-                for(int i=0;i<blocks.Count;i++)
+                for(int i=0;i<blocks.Count;i++){
+                    blocks[i].ColliderEnabled = true;
                     grid.SetBlocks(blocks[i].Coord,blocks[i]);
+                }
                 foreach(var b in hintBlocks)
                     Transform.Destroy(b.gameObject);
                 GameManager.Inst.OnTurnEnd();
