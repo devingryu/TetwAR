@@ -56,6 +56,12 @@ namespace TAR
                 (0 <= coord.z && coord.z < GridBound.z) &&
                 blocks[coord.x, coord.y, coord.z] == null
             );
+        public bool isCoordSane(Vector3Int[] coords)
+        {
+            foreach (var v in coords)
+                if (!isCoordSane(v)) return false;
+            return true;
+        }
         public void MoveBlock(Vector3Int coord, Vector3Int newCoord)
         {
             blocks[newCoord.x,newCoord.y,newCoord.z] = blocks[coord.x,coord.y,coord.z];

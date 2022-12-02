@@ -28,6 +28,17 @@ namespace TAR
         protected Transform blockParent;
         protected Grid grid;
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
+        
+        private Vector3Int[] translationComb = {
+            new(-1,0,0),new(1,0,0),new(0,-1,0),new(0,1,0),new(0,0,-1),new(0,0,1),
+
+            new(1,1,0),new(1,-1,0),new(-1,1,0),new(-1,-1,0),
+            new(1,0,1),new(1,0,-1),new(-1,0,1),new(-1,0,-1),
+            new(0,1,1),new(0,1,-1),new(0,-1,1),new(0,-1,-1),
+
+            new(1,1,1),new(1,1,-1),new(1,-1,1),new(1,-1,-1),
+            new(-1,1,1),new(-1,1,-1),new(-1,-1,1),new(-1,-1,-1)
+            };
 
         public void Init(Transform blockParent) 
         {
@@ -214,20 +225,41 @@ namespace TAR
                     hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
                 }
             }
+            var bestFit = GetBestFit(CameraPoint);
+            if (bestFit == null) return;
+
             var blockCoords = blocks.Select( b => b.Coord );
-            var maxDown = checkMaxDownY(true);
-            Debug.Log($"maxDown:{maxDown}");
-            for(int j=0;j<hintBlocks.Count;j++)
+            for(int i=0;i<hintBlocks.Count;i++)
             {
-                var p = InitCoords[j] + CameraPoint/* + Vector3Int.up * (maxDown)*/;
-                hintBlocks[j].Coord = p;
-                hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
+                var p = InitCoords[i] + (Vector3Int) bestFit;
+                hintBlocks[i].Coord = p;
+                hintBlocks[i].gameObject.SetActive(!blockCoords.Contains(p));
             }
+            // var blockCoords = blocks.Select( b => b.Coord );
+            // var maxDown = checkMaxDownY(true);
+            // for(int j=0;j<hintBlocks.Count;j++)
+            // {
+            //     var p = InitCoords[j] + CameraPoint/* + Vector3Int.up * (maxDown)*/;
+            //     hintBlocks[j].Coord = p;
+            //     hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
+            // }
 
         }
-        protected Vector3Int GetBestFit(Vector3Int centerPoint)
+        protected Vector3Int[] getTranslatedPos(Vector3Int point)
         {
-            
+            Vector3Int[] v = new Vector3Int[InitCoords.Length];
+            for(int i=0;i<4;i++)
+                v[i] = InitCoords[i] + point;
+            return v;
+        }
+        protected Vector3Int? GetBestFit(Vector3Int centerPoint)
+        {
+            if(grid.isCoordSane(getTranslatedPos(centerPoint))) return centerPoint;
+            foreach(var v in translationComb)
+            {
+                if(grid.isCoordSane(getTranslatedPos(centerPoint+v))) return centerPoint+v;
+            }
+            return null;
         }
     }
 }
