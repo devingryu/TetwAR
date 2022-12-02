@@ -13,6 +13,7 @@ namespace TAR
             typeof(LBlockGroup),
             typeof(SquareBlockGroup),
             typeof(TFBlockGroup),
+            typeof(SBlockGroup),
             };
         private GameManager gm;
         public Grid grid;
