@@ -26,7 +26,7 @@ namespace TAR
             set {
                 colliderEnabled = value;
                 gameObject.GetComponent<BoxCollider>().enabled = value;
-                Debug.Log($"BoxCollider:{value}");
+                //Debug.Log($"BoxCollider:{value}");
             }
         }
         public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false)

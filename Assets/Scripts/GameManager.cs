@@ -20,7 +20,7 @@ namespace TAR
         public void Init(Map map) 
         {
             this.map = map;
-            Debug.Log("Map attached!");
+            //Debug.Log("Map attached!");
             mask = 1 << LayerMask.NameToLayer("BaseBlock");
             //map.CreateNew();
         }

@@ -30,7 +30,7 @@ namespace TAR
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
         
         private Vector3Int[] translationComb = {
-            new(-1,0,0),new(1,0,0),new(0,-1,0),new(0,1,0),new(0,0,-1),new(0,0,1),
+            new(0,-1,0),new(-1,0,0),new(1,0,0),new(0,1,0),new(0,0,-1),new(0,0,1),
 
             new(1,1,0),new(1,-1,0),new(-1,1,0),new(-1,-1,0),
             new(1,0,1),new(1,0,-1),new(-1,0,1),new(-1,0,-1),
