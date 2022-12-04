@@ -22,7 +22,7 @@ namespace TAR
             this.map = map;
             //Debug.Log("Map attached!");
             mask = 1 << LayerMask.NameToLayer("BaseBlock");
-            //map.CreateNew();
+            map.CreateNew();
         }
 
         void Update()
@@ -41,7 +41,6 @@ namespace TAR
                 var v3i = Vector3Int.RoundToInt(norm);
                 if (v3i.sqrMagnitude != 1) return;
                 v3i = new(v3i.x,-v3i.y,v3i.z);
-                //text.text = (hit.transform.GetComponent<Block>().Coord + v3i).ToString();
                 map.current.CameraPoint = hit.transform.GetComponent<Block>().Coord + v3i;
             }
         }

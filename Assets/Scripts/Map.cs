@@ -23,6 +23,8 @@ namespace TAR
         public int next;
         [SerializeField]
         private Transform blockParent;
+        private List<Type> blockQueue = new();
+        private int lastType = -1;
 
         private void Start() {
             gm = GameManager.Inst;
@@ -32,13 +34,23 @@ namespace TAR
         }
         public void CreateNew()
         {
-            var rand = UnityEngine.Random.Range(0,blockGroups.Length);
-            current = (BlockGroup) Activator.CreateInstance(blockGroups[rand]);
+            while(blockQueue.Count >= 5)
+                blockQueue.Add(PickRandom());
+        
+            current = (BlockGroup) Activator.CreateInstance(blockQueue[0]);
+            for(int i=0;i<5;i++)
+                blockQueue[i] = blockQueue[i+1];
+            blockQueue[4] = PickRandom();
             current.Init(blockParent);
         }
         public void DownOne()
-            =>
-                current.DownOne();
-        
+            => current.DownOne();
+        private Type PickRandom()
+        {
+            int newType;
+            while((newType = UnityEngine.Random.Range(0,blockGroups.Length)) == lastType);
+            lastType = newType;
+            return blockGroups[newType];
+        }
     }
 }
