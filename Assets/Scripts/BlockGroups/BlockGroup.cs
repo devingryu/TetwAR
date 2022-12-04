@@ -249,5 +249,17 @@ namespace TAR
             }
             return null;
         }
+        public void PlaceOnHint()
+        {
+            if(hintBlocks == null) return;
+            for(int i=0;i<blocks.Count;i++){
+                blocks[i].Coord = hintBlocks[i].Coord;
+                blocks[i].ColliderEnabled = true;
+                grid.SetBlocks(blocks[i].Coord,blocks[i]);
+            }
+            foreach(var b in hintBlocks)
+                Transform.Destroy(b.gameObject);
+            GameManager.Inst.OnTurnEnd();
+        }
     }
 }

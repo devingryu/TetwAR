@@ -34,7 +34,7 @@ namespace TAR
             grid = GameManager.Inst.map.grid;
             Coord = coord;
             this.isHint = isHint;
-            this.color = isHint?new Color(color.r,color.g,color.b,0.3f):color;
+            this.color = isHint?new Color(color.r,color.g,color.b,0.6f):color;
             ColliderEnabled = colliderEnabled;
 
             var renderer = GetComponent<MeshRenderer>();
