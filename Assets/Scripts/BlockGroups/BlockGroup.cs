@@ -52,7 +52,7 @@ namespace TAR
             blocks = new List<Block>(InitCoords.Length);
             for(int i=0;i<InitCoords.Length;i++)
             {
-                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
+                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,currentBlock:true));
             }
         }
         public void DownFull()
@@ -204,7 +204,7 @@ namespace TAR
                 hintBlocks = new List<Block>(InitCoords.Length);
                 for(int i=0;i<InitCoords.Length;i++)
                 {
-                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,true));
+                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,isHint: true));
                 }
             }
             var bestFit = GetBestFit(CameraPoint);

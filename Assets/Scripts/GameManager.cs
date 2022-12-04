@@ -16,18 +16,27 @@ namespace TAR
         private float targetTime = 2f;
         private int mask;
         private RaycastHit hit;
+        private int score = 0;
+        public int Score {
+            get => score;
+            set {
+                score = value;
+                // TODO: Update UI on score change
+            }
+        }
+        public bool isRunning = false;
         
         public void Init(Map map) 
         {
             this.map = map;
-            //Debug.Log("Map attached!");
             mask = 1 << LayerMask.NameToLayer("BaseBlock");
-            map.CreateNew();
+            isRunning = true;
+            // map.CreateNew();
         }
 
         void Update()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             timer += Time.deltaTime;
             if(timer >= targetTime)
             {
@@ -52,60 +61,65 @@ namespace TAR
         [ContextMenu("XY회전")]
         public void XYClock()
         {
-            if(map == null) return;
+            if(!isRunning) return;
             map.current.Rotate(BlockGroup.Rotation.XYClock);
         }
         [ContextMenu("XZ회전")]
         public void XZClock()
         {
-            if(map == null) return;
+            if(!isRunning) return;
             map.current.Rotate(BlockGroup.Rotation.XZClock);
         }
         [ContextMenu("YZ회전")]
         public void YZClock()
         {
-            if(map == null) return;
+            if(!isRunning) return;
             map.current.Rotate(BlockGroup.Rotation.YZClock);
         }
         public void Translate(Vector3Int d)
         {
-            if(map == null) return;
+            if(!isRunning) return;
             map.current.Translate(d);
         }
         public void Forward()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.Translate(Vector3Int.forward); ;
         }
         public void Back()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.Translate(Vector3Int.back); ;
         }
         public void Right()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.Translate(Vector3Int.right); ;
         }
         public void Left()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.Translate(Vector3Int.left); ;
         }
         public void DownFull()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.DownFull();
         }
         public void DownOne()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.DownOne();
         }
         public void PlaceOnHint()
         {
-            if (map == null) return;
+            if (!isRunning) return;
             map.current.PlaceOnHint();
+        }
+        public void OnGameOver()
+        {
+            Debug.Log("GAME OVER!");
+            isRunning = false;
         }
     }
 }

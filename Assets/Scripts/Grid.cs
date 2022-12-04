@@ -6,7 +6,7 @@ namespace TAR
 {
     public class Grid : MonoBehaviour
     {
-        Block[,,] blocks;
+        public Block[,,] blocks;
         public Vector3Int GridBound { get; private set; }
         private readonly Vector3 GridCenterPoint = new(0f, 0f, 0f);
         private Vector3 GridZeroPoint; // 좌하단이 Zero
@@ -119,6 +119,7 @@ namespace TAR
                     }
                 }
             }
+            GameManager.Inst.Score++;
         }
     }
 }

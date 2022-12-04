@@ -29,9 +29,11 @@ namespace TAR
                 //Debug.Log($"BoxCollider:{value}");
             }
         }
-        public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false)
+        public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false, bool currentBlock = false)
         {
             grid = GameManager.Inst.map.grid;
+            if(currentBlock && grid.GetBlocks(coord) != null)
+                GameManager.Inst.OnGameOver();
             Coord = coord;
             this.isHint = isHint;
             this.color = isHint?new Color(color.r,color.g,color.b,0.6f):color;
