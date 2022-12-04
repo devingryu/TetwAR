@@ -59,6 +59,7 @@ namespace TAR
         }
         public void DownFull()
         {
+            /*
             var maxDown = checkMaxDownY() * Vector3Int.up;
             
             for(int i=0;i<blocks.Count;i++){
@@ -69,6 +70,7 @@ namespace TAR
             foreach(var b in hintBlocks)
                 Transform.Destroy(b.gameObject);
             GameManager.Inst.OnTurnEnd();
+            */
         }
         public void DownOne()
         {
@@ -191,31 +193,12 @@ namespace TAR
         public enum Rotation {
             XYClock,XYCounterClock,XZClock,XZCounterClock,YZClock,YZCounterClock
         }
-        private int checkMaxDownY(bool isPoint = false)
+        private int checkMaxDownY(Vector3Int[] bs)
         {
             var up = Vector3Int.up;
-            if(isPoint) {
-                Vector3Int[] p = new Vector3Int[4];
-                for(int i=0;i<4;i++)
-                {
-                    p[i] = InitCoords[i] + CameraPoint;
-                }
-                for(int i=1;;i++)
-                {
-                    if(!CheckIfSane(blocks, up * i))
-                    {
-                        return i-1;
-                    }
-                }
-            } else {
-                for(int i=1;;i++)
-                {
-                    if(!CheckIfSane(blocks, up * i))
-                    {
-                        return i-1;
-                    }
-                }
-            }
+            for (int k=1;;k++)
+                if(!CheckIfSane(bs, up * k))
+                    return k-1;
         }
         protected void refreshHint()
         {
@@ -230,10 +213,13 @@ namespace TAR
             var bestFit = GetBestFit(CameraPoint);
             if (bestFit == null) return;
 
+            var tPos = getTranslatedPos((Vector3Int) bestFit);
+            var maxDownY = checkMaxDownY(tPos);
+            
             var blockCoords = blocks.Select( b => b.Coord );
             for(int i=0;i<hintBlocks.Count;i++)
             {
-                var p = InitCoords[i] + (Vector3Int) bestFit;
+                var p = tPos[i] + (Vector3Int.up * maxDownY);
                 hintBlocks[i].Coord = p;
                 hintBlocks[i].gameObject.SetActive(!blockCoords.Contains(p));
             }
