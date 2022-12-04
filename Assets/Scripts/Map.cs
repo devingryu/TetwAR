@@ -27,7 +27,7 @@ namespace TAR
         private void Start() {
             gm = GameManager.Inst;
             gm.Init(this);
-            grid.Init(new(6,15,6));
+            grid.Init(new(5,15,5));
             CreateNew();
         }
         public void CreateNew()
@@ -37,8 +37,8 @@ namespace TAR
             current.Init(blockParent);
         }
         public void DownOne()
-        {
-            current.DownOne();
-        }
+            =>
+                current.DownOne();
+        
     }
 }
