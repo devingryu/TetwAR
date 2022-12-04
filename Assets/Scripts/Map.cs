@@ -34,11 +34,10 @@ namespace TAR
         }
         public void CreateNew()
         {
-            while(blockQueue.Count >= 5)
+            while(blockQueue.Count < 5)
                 blockQueue.Add(PickRandom());
-        
             current = (BlockGroup) Activator.CreateInstance(blockQueue[0]);
-            for(int i=0;i<5;i++)
+            for(int i=0;i<4;i++)
                 blockQueue[i] = blockQueue[i+1];
             blockQueue[4] = PickRandom();
             current.Init(blockParent);

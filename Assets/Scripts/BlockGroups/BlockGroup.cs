@@ -54,8 +54,6 @@ namespace TAR
             {
                 blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor));
             }
-            //refreshHint();
-            //blocks.Sort((a,b) => (a.Coord.y > b.Coord.y) ? -1 : 1);
         }
         public void DownFull()
         {
@@ -89,7 +87,6 @@ namespace TAR
                 GameManager.Inst.OnTurnEnd();
                 return;
             }
-            //refreshHint();
         }
         protected bool CheckIfSane(List<Block> lst, Vector3Int disp)
         {
@@ -223,15 +220,6 @@ namespace TAR
                 hintBlocks[i].Coord = p;
                 hintBlocks[i].gameObject.SetActive(!blockCoords.Contains(p));
             }
-            // var blockCoords = blocks.Select( b => b.Coord );
-            // var maxDown = checkMaxDownY(true);
-            // for(int j=0;j<hintBlocks.Count;j++)
-            // {
-            //     var p = InitCoords[j] + CameraPoint/* + Vector3Int.up * (maxDown)*/;
-            //     hintBlocks[j].Coord = p;
-            //     hintBlocks[j].gameObject.SetActive(!blockCoords.Contains(p));
-            // }
-
         }
         protected Vector3Int[] getTranslatedPos(Vector3Int point)
         {
