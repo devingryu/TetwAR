@@ -24,6 +24,7 @@ namespace TAR
         [SerializeField]
         private Transform blockParent;
         private List<Type> blockQueue = new();
+        private Type holdBlock = null;
         private int lastType = -1;
         private LineRenderer lr;
 
@@ -73,6 +74,23 @@ namespace TAR
             while((newType = UnityEngine.Random.Range(0,blockGroups.Length)) == lastType);
             lastType = newType;
             return blockGroups[newType];
+        }
+        public void BlockHold()
+        {
+            if(holdBlock == null)
+            {
+                holdBlock = current.GetType();
+                current.Dispose();
+                CreateNew();
+            }
+            else
+            {
+                var temp = current.GetType();
+                current.Dispose();
+                current = (BlockGroup) Activator.CreateInstance(holdBlock);
+                current.Init(blockParent);
+                holdBlock = temp;
+            }
         }
     }
 }

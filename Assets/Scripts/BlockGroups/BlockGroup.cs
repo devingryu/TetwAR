@@ -249,5 +249,12 @@ namespace TAR
                 Transform.Destroy(b.gameObject);
             GameManager.Inst.OnTurnEnd();
         }
+        public void Dispose()
+        {
+            foreach(var v in blocks)
+                Transform.Destroy(v.gameObject);
+            foreach(var v in hintBlocks)
+                Transform.Destroy(v.gameObject);
+        }
     }
 }

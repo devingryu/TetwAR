@@ -121,5 +121,10 @@ namespace TAR
             Debug.Log("GAME OVER!");
             isRunning = false;
         }
+        public void BlockHold()
+        {
+            if(!isRunning) return;
+            map.BlockHold();
+        }
     }
 }
