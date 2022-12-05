@@ -8,6 +8,7 @@ namespace TAR
     {
         public Block[,,] blocks;
         public Vector3Int GridBound { get; private set; }
+        public Vector3[] GridPositionBound { get; private set; }
         private readonly Vector3 GridCenterPoint = new(0f, 0f, 0f);
         private Vector3 GridZeroPoint; // 좌하단이 Zero
         private Vector3 BlockShape;
@@ -26,11 +27,15 @@ namespace TAR
                 zeroPoint[i] = GridCenterPoint[i] - ((bound[i] % 2 == 0) ? (bound[i] / 2 - 0.5f) : (bound[i] / 2)) * BlockShape[i];
             GridZeroPoint = new Vector3(zeroPoint[0], BlockShape[1] * (bound.y - 1), zeroPoint[2]);
 
-            Color color  = new Color32(74,47,0,255);
-            for(int i=0;i<bound.x;i++)
-                for(int j=0;j<bound.z;j++)
-                    Instantiate(baseBlock,Vector3.zero,Quaternion.identity,baseParent).GetComponent<Block>().Init(new(i,bound.y,j),color,colliderEnabled: true);
+            Color color = new Color32(74, 47, 0, 255);
+            for (int i = 0; i < bound.x; i++)
+                for (int j = 0; j < bound.z; j++)
+                    Instantiate(baseBlock, Vector3.zero, Quaternion.identity, baseParent).GetComponent<Block>().Init(new(i, bound.y, j), color, colliderEnabled: true);
 
+            GridPositionBound = new Vector3[2] {
+                Coord2Pos(new(0,bound.y-1,0))-BlockShape/2,
+                Coord2Pos(new(bound.x-1,0,bound.z-1))+BlockShape/2
+            };
             en = true;
         }
         public Vector3 Coord2Pos(Vector3Int coord)
@@ -64,14 +69,14 @@ namespace TAR
         }
         public void MoveBlock(Vector3Int coord, Vector3Int newCoord)
         {
-            blocks[newCoord.x,newCoord.y,newCoord.z] = blocks[coord.x,coord.y,coord.z];
-            blocks[coord.x,coord.y,coord.z] = null;
+            blocks[newCoord.x, newCoord.y, newCoord.z] = blocks[coord.x, coord.y, coord.z];
+            blocks[coord.x, coord.y, coord.z] = null;
             blocks[newCoord.x, newCoord.y, newCoord.z].Coord = newCoord;
         }
 
         public void CheckRemove()
         {
-            for(int i = 0; i < GridBound.y; i++)
+            for (int i = 0; i < GridBound.y; i++)
             {
                 if (CheckFloor(i))
                     RemoveFloor(i);
@@ -112,7 +117,7 @@ namespace TAR
                 {
                     for (int k = 0; k < GridBound.z; k++)
                     {
-                        if(blocks[j, i, k]!=null)
+                        if (blocks[j, i, k] != null)
                         {
                             MoveBlock(blocks[j, i, k].Coord, blocks[j, i, k].Coord + new Vector3Int(0, 1, 0));
                         }
