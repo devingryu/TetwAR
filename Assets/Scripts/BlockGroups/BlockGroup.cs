@@ -15,6 +15,7 @@ namespace TAR
         public List<Block> hintBlocks;
         protected GameObject baseBlock;
         protected abstract Vector3Int[] InitCoords {get;set;}
+        public Vector3Int[] _InitCoords => InitCoords;
         protected abstract Vector3Int CenterPos {get;set;}
         protected Vector3Int cameraPoint;
         public Vector3Int CameraPoint {
@@ -25,6 +26,7 @@ namespace TAR
             }
         }
         protected virtual Color blockColor {get;set;} = Color.white;
+        public Color _BlockColor => blockColor;
         protected Transform blockParent;
         protected Grid grid;
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
