@@ -253,10 +253,12 @@ namespace TAR
         }
         public void Dispose()
         {
-            foreach(var v in blocks)
-                Transform.Destroy(v.gameObject);
-            foreach(var v in hintBlocks)
-                Transform.Destroy(v.gameObject);
+            if(blocks != null)
+                foreach(var v in blocks)
+                    Transform.Destroy(v.gameObject);
+            if(hintBlocks != null)
+                foreach(var v in hintBlocks)
+                    Transform.Destroy(v.gameObject);
         }
     }
 }
