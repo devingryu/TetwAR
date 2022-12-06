@@ -30,6 +30,7 @@ namespace TAR
         protected Transform blockParent;
         protected Grid grid;
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
+        private bool isHintOnInit = false;
         
         private Vector3Int[] translationComb = {
             new(0,-1,0),new(-1,0,0),new(1,0,0),new(0,1,0),new(0,0,-1),new(0,0,1),
@@ -203,6 +204,7 @@ namespace TAR
         {
             if(hintBlocks == null)
             {
+                isHintOnInit = true;
                 hintBlocks = new List<Block>(InitCoords.Length);
                 for(int i=0;i<InitCoords.Length;i++)
                 {
@@ -222,6 +224,7 @@ namespace TAR
                 hintBlocks[i].Coord = p;
                 hintBlocks[i].gameObject.SetActive(!blockCoords.Contains(p));
             }
+            isHintOnInit = false;
         }
         protected Vector3Int[] getTranslatedPos(Vector3Int point)
         {
@@ -241,7 +244,7 @@ namespace TAR
         }
         public void PlaceOnHint()
         {
-            if(hintBlocks == null) return;
+            if(hintBlocks == null || isHintOnInit) return;
             for(int i=0;i<blocks.Count;i++){
                 blocks[i].Coord = hintBlocks[i].Coord;
                 blocks[i].ColliderEnabled = true;
