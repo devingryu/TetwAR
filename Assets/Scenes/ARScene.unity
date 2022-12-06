@@ -2145,6 +2145,7 @@ GameObject:
   - component: {fileID: 1357905558}
   - component: {fileID: 1357905557}
   - component: {fileID: 1357905556}
+  - component: {fileID: 1357905559}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2198,6 +2199,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1357905559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357905555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9c2f6814ede934492937bf3b9a59a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BgmPlayer: {fileID: 0}
+  EffectPlayer: {fileID: 0}
+  breakFloor: {fileID: 8300000, guid: 0bd27a10ac1d42c429b28d0a45b8f0c0, type: 3}
+  clickButton: {fileID: 8300000, guid: fe47996999ea8e24fab352090ba3b8ca, type: 3}
+  placeBlock: {fileID: 8300000, guid: b84611c519de2ec4891e66c8ba0ca124, type: 3}
+  EffectAudioClips: []
 --- !u!1 &1531283047
 GameObject:
   m_ObjectHideFlags: 0

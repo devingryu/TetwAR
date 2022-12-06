@@ -80,18 +80,21 @@ namespace TAR
         public void XYClock()
         {
             if(!isRunning) return;
+            SoundManager.Inst.PlayEffect("ClickButton");
             map.current.Rotate(BlockGroup.Rotation.XYClock);
         }
         [ContextMenu("XZ회전")]
         public void XZClock()
         {
             if(!isRunning) return;
+            SoundManager.Inst.PlayEffect("ClickButton");
             map.current.Rotate(BlockGroup.Rotation.XZClock);
         }
         [ContextMenu("YZ회전")]
         public void YZClock()
         {
             if(!isRunning) return;
+            SoundManager.Inst.PlayEffect("ClickButton");
             map.current.Rotate(BlockGroup.Rotation.YZClock);
         }
         public void Translate(Vector3Int d)
@@ -132,6 +135,7 @@ namespace TAR
         public void PlaceOnHint()
         {
             if (!isRunning) return;
+            SoundManager.Inst.PlayEffect("PlaceBlock");
             map.current.PlaceOnHint();
         }
         public void OnGameOver()
@@ -143,6 +147,7 @@ namespace TAR
         {
             if(!isRunning) return;
             var holdType = map.BlockHold();
+            SoundManager.Inst.PlayEffect("ClickButton");
             holdImage.sprite = holdSprites[spriteMapper[holdType]];
             holdImage.enabled = true;
             holdText.SetActive(false);

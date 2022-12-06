@@ -106,6 +106,7 @@ namespace TAR
                     UnsetBlocks(new Vector3Int(j, y, k));
                 }
             }
+            SoundManager.Inst.PlayEffect("BreakFloor");
             DownUpperFloor(y);
         }
 
