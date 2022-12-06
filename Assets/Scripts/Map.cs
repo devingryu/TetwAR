@@ -75,22 +75,23 @@ namespace TAR
             lastType = newType;
             return blockGroups[newType];
         }
-        public void BlockHold()
+        public Type BlockHold()
         {
+            var temp = current.GetType();
             if(holdBlock == null)
             {
-                holdBlock = current.GetType();
+                holdBlock = temp;
                 current.Dispose();
                 CreateNew();
             }
             else
             {
-                var temp = current.GetType();
                 current.Dispose();
                 current = (BlockGroup) Activator.CreateInstance(holdBlock);
                 current.Init(blockParent);
                 holdBlock = temp;
             }
+            return temp;
         }
     }
 }

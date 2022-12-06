@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System;
 
 namespace TAR
 {
@@ -12,6 +14,19 @@ namespace TAR
         public TextMeshProUGUI text;
         [HideInInspector]
         public Map map;
+        [SerializeField]
+        private Image holdImage;
+        [SerializeField]
+        private GameObject holdText;
+        private Sprite[] holdSprites;
+        private Dictionary<Type,int> spriteMapper = new(){
+            {typeof(ABlockGroup),0},
+            {typeof(IBlockGroup),1},
+            {typeof(LBlockGroup),2},
+            {typeof(SquareBlockGroup),4},
+            {typeof(TFBlockGroup),5},
+            {typeof(SBlockGroup),3}
+        };
         private float timer = 0f;
         private float targetTime = 2f;
         private int mask;
@@ -25,7 +40,10 @@ namespace TAR
             }
         }
         public bool isRunning = false;
-        
+        private void Awake() 
+        {
+            holdSprites = ResourceDictionary.GetAll<Sprite>("Images/BlockSprites");
+        }
         public void Init(Map map) 
         {
             this.map = map;
@@ -124,7 +142,10 @@ namespace TAR
         public void BlockHold()
         {
             if(!isRunning) return;
-            map.BlockHold();
+            var holdType = map.BlockHold();
+            holdImage.sprite = holdSprites[spriteMapper[holdType]];
+            holdImage.enabled = true;
+            holdText.SetActive(false);
         }
     }
 }
