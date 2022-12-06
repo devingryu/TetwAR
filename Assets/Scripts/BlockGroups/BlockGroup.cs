@@ -85,7 +85,8 @@ namespace TAR
                     blocks[i].ColliderEnabled = true;
                     grid.SetBlocks(blocks[i].Coord,blocks[i]);
                 }
-                foreach(var b in hintBlocks)
+                SoundManager.Inst.PlayEffect("PlaceBlock");
+                foreach (var b in hintBlocks)
                     Transform.Destroy(b.gameObject);
                 GameManager.Inst.OnTurnEnd();
                 return;
