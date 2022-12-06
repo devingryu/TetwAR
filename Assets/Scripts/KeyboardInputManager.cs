@@ -18,7 +18,7 @@ namespace TAR
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Z)) {
-                gm.YZClock();
+                gm.YZCounterClock();
             } if (Input.GetKeyDown(KeyCode.X)) {
                 gm.XYClock();
             } if(Input.GetKeyDown(KeyCode.C)) {

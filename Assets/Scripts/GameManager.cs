@@ -91,11 +91,11 @@ namespace TAR
             map.current.Rotate(BlockGroup.Rotation.XZClock);
         }
         [ContextMenu("YZ회전")]
-        public void YZClock()
+        public void YZCounterClock()
         {
             if(!isRunning) return;
             SoundManager.Inst.PlayEffect("ClickButton");
-            map.current.Rotate(BlockGroup.Rotation.YZClock);
+            map.current.Rotate(BlockGroup.Rotation.YZCounterClock);
         }
         public void Translate(Vector3Int d)
         {
