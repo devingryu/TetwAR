@@ -110,6 +110,8 @@ namespace TAR
                 }
             }
             SoundManager.Inst.PlayEffect("BreakFloor");
+            GameManager.Inst.PickItem(map.ID);
+            GameManager.Inst.ScoreIncrement(map.ID);
             DownUpperFloor(y);
         }
 
@@ -128,7 +130,6 @@ namespace TAR
                     }
                 }
             }
-            GameManager.Inst.ScoreIncrement(map.ID);
         }
     }
 }

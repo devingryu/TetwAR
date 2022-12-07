@@ -32,6 +32,7 @@ namespace TAR
         public Type HoldBlock => holdBlock;
         private int lastType = -1;
         private LineRenderer lr;
+        public int itemInfo = 0;
         
         private void Start() 
         {
@@ -72,7 +73,7 @@ namespace TAR
         }
         public void CreateNew()
         {
-            while(blockQueue.Count <= 0)
+            if(blockQueue.Count <= 0)
                 FillQueue();
             current = (BlockGroup) Activator.CreateInstance(blockQueue[blockQueue.Count-1]);
             blockQueue.RemoveAt(blockQueue.Count-1);
@@ -110,6 +111,32 @@ namespace TAR
                 holdBlock = temp;
             }
             return temp;
+        }
+        public void RandomizeHold()
+        {
+            if(holdBlock == null) return;
+            holdBlock = PickRandom();
+        }
+        public void SetUpcomingBlock(Type type)
+        {
+            if(blockQueue.Count <= 0)
+                FillQueue();
+            blockQueue[blockQueue.Count-1] = type;
+        }
+        public void CreateBlocks(Vector3Int[] coords)
+        {
+            if(grid == null) return;
+            var baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
+            Color color = new Color32(130, 130, 130, 255);
+            foreach (var c in coords)
+            {
+                if(grid.GetBlocks(c) == null)
+                {
+                    grid.SetBlocks(c,
+                        GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(c,color,this,colliderEnabled:true)
+                    );
+                }
+            }
         }
     }
 }

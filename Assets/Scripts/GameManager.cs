@@ -4,18 +4,20 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 namespace TAR
 {
     public class GameManager : Singleton<GameManager>
     {
-        
         public Transform cam;
         [SerializeField]
         private GameObject holdText;
         private Sprite[] holdSprites;
         [SerializeField]
         private Image holdImage;
+        [SerializeField]
+        private ItemButton itemButton;
         private float timer = 0f;
         private float targetTime = 2f;
         private int mask;
@@ -42,7 +44,9 @@ namespace TAR
         private int[] score = {0,0};
         private String scoreText => maxPlayer>1?$"{score[0]}:{score[1]}":$"{score[0]}";
         
+        [HideInInspector]
         public bool canHold = true;
+        private int itemToBeUsed = 0;
         private void Awake() 
         {
             holdSprites = ResourceDictionary.GetAll<Sprite>("Images/BlockSprites");
@@ -90,12 +94,14 @@ namespace TAR
         public void OnTurnEnd()
         {
             var newPlayer = maxPlayer - currentPlayer - 1;
+            ItemUseHandler(newPlayer);
             foreach(var m in map)
                 m.grid.CheckRemove();
             map[newPlayer].CreateNew();
             canHold = true;
             currentPlayer = newPlayer;
             RefreshHoldImage();
+            RefreshItemImage();
         }
         [ContextMenu("XY회전")]
         public void XYClock()
@@ -195,6 +201,40 @@ namespace TAR
             if( 0 > mapID || mapID >= maxPlayer) return;
             score[mapID]++;
             // TODO: Update UI on score change
+        }
+        public void PickItem(int mapID)
+        {
+            if(maxPlayer <= 1 || 0 > mapID || mapID >= maxPlayer) return;
+            map[mapID].itemInfo = UnityEngine.Random.Range(1,4);
+            RefreshItemImage();
+        }
+        private void RefreshItemImage()
+        {
+            if(itemButton == null) return;
+            itemButton.ItemIndex = CMap.itemInfo;
+        }
+        public void OnItemButtonPressed()
+        {
+            itemToBeUsed = CMap.itemInfo;
+            CMap.itemInfo = 0;
+            RefreshItemImage();
+        }
+        private void ItemUseHandler(int newPlayer)
+        {
+            switch(itemToBeUsed)
+            {
+                case 1:
+                    map[newPlayer].RandomizeHold();
+                break;
+                case 2:
+                    map[newPlayer].SetUpcomingBlock(map[currentPlayer].current.GetType());
+                break;
+                case 3:
+                    var blockCoords = map[currentPlayer].current.blocks.Select( b => b.Coord ).ToArray();
+                    map[newPlayer].CreateBlocks(blockCoords);
+                break;
+            }
+            itemToBeUsed = 0;
         }
     }
 }
