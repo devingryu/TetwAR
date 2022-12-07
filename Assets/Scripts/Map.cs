@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace TAR
 {
@@ -23,7 +24,7 @@ namespace TAR
         public int next;
         [SerializeField]
         private Transform blockParent;
-        private List<Type> blockQueue = new();
+        private List<Type> blockQueue = new(8);
         private Type holdBlock = null;
         private int lastType = -1;
         private LineRenderer lr;
@@ -58,16 +59,20 @@ namespace TAR
         }
         public void CreateNew()
         {
-            while(blockQueue.Count < 5)
-                blockQueue.Add(PickRandom());
-            current = (BlockGroup) Activator.CreateInstance(blockQueue[0]);
-            for(int i=0;i<4;i++)
-                blockQueue[i] = blockQueue[i+1];
-            blockQueue[4] = PickRandom();
+            while(blockQueue.Count <= 0)
+                FillQueue();
+            current = (BlockGroup) Activator.CreateInstance(blockQueue[blockQueue.Count-1]);
+            blockQueue.RemoveAt(blockQueue.Count-1);
             current.Init(blockParent);
         }
         public void DownOne()
             => current.DownOne();
+        private void FillQueue()
+        {
+            blockQueue.Clear();
+            var randomized = blockGroups.OrderBy(_ => UnityEngine.Random.Range(-10f,10f));
+            blockQueue.AddRange(randomized);
+        }
         private Type PickRandom()
         {
             int newType;
