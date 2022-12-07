@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TAR
 {
@@ -26,7 +27,7 @@ namespace TAR
 
         public void MainMenu()
         {
-            // After Make Main Menu
+            SceneManager.LoadScene("MainMenu");
         }
 
         public void Quit()
