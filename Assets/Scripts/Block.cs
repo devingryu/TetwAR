@@ -35,7 +35,7 @@ namespace TAR
             grid = map.grid;
             mapID = map.ID;
             if(currentBlock && grid.GetBlocks(coord) != null)
-                GameManager.Inst.OnGameOver();
+                GameManager.Inst.OnGameOver(mapID);
             Coord = coord;
             this.isHint = isHint;
             this.color = isHint?new Color(color.r,color.g,color.b,0.6f):color;

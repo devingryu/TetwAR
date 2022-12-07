@@ -17,6 +17,8 @@ namespace TAR
         [SerializeField]
         private Image holdImage;
         [SerializeField]
+        private GameObject gameOverUI;
+        [SerializeField]
         private ItemButton itemButton;
         private float timer = 0f;
         private float targetTime = 2f;
@@ -165,10 +167,15 @@ namespace TAR
             SoundManager.Inst.PlayEffect("PlaceBlock");
             CMap.current.PlaceOnHint();
         }
-        public void OnGameOver()
+        public void OnGameOver(int gameOverPlayer)
         {
             Debug.Log("GAME OVER!");
             isRunning = false;
+            gameOverUI.gameObject.SetActive(true);
+            if (maxPlayer == 1)
+                gameOverUI.GetComponent<GameOverUI>().SetText(-1);
+            else
+                gameOverUI.GetComponent<GameOverUI>().SetText(gameOverPlayer);
         }
         public void BlockHold()
         {
