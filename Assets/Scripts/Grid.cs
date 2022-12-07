@@ -27,10 +27,11 @@ namespace TAR
                 zeroPoint[i] = GridCenterPoint[i] - ((bound[i] % 2 == 0) ? (bound[i] / 2 - 0.5f) : (bound[i] / 2)) * BlockShape[i];
             GridZeroPoint = new Vector3(zeroPoint[0], BlockShape[1] * (bound.y - 1), zeroPoint[2]);
 
+            var rotation = GameManager.Inst.map.transform.rotation;
             Color color = new Color32(74, 47, 0, 255);
             for (int i = 0; i < bound.x; i++)
                 for (int j = 0; j < bound.z; j++)
-                    Instantiate(baseBlock, Vector3.zero, Quaternion.identity, baseParent).GetComponent<Block>().Init(new(i, bound.y, j), color, colliderEnabled: true);
+                    Instantiate(baseBlock, Vector3.zero, rotation, baseParent).GetComponent<Block>().Init(new(i, bound.y, j), color, colliderEnabled: true);
 
             GridPositionBound = new Vector3[2] {
                 Coord2Pos(new(0,bound.y-1,0))-BlockShape/2,

@@ -40,6 +40,7 @@ namespace TAR
             }
         }
         public bool isRunning = false;
+        public bool canHold = true;
         private void Awake() 
         {
             holdSprites = ResourceDictionary.GetAll<Sprite>("Images/BlockSprites");
@@ -75,6 +76,7 @@ namespace TAR
         {
             map.grid.CheckRemove();
             map.CreateNew();
+            canHold = true;
         }
         [ContextMenu("XY회전")]
         public void XYClock()
@@ -145,7 +147,8 @@ namespace TAR
         }
         public void BlockHold()
         {
-            if(!isRunning) return;
+            if(!isRunning || !canHold) return;
+            canHold = false;
             var holdType = map.BlockHold();
             SoundManager.Inst.PlayEffect("ClickButton");
             holdImage.sprite = holdSprites[spriteMapper[holdType]];
