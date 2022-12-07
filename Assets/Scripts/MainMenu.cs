@@ -7,9 +7,14 @@ namespace TAR
 {
     public class MainMenu : MonoBehaviour
     {
-        public void StartGame()
+        public void SinglePlay()
         {
             SceneManager.LoadScene("ARScene");
+        }
+
+        public void MultyPlay()
+        {
+            SceneManager.LoadScene("ARSceneMulti");
         }
 
         public void Quit()
