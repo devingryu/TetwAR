@@ -44,7 +44,9 @@ namespace TAR
         public Map CMap => map[currentPlayer];
         
         private int[] score = {0,0};
-        private String scoreText => maxPlayer>1?$"{score[0]}:{score[1]}":$"{score[0]}";
+        private String scoreText => maxPlayer>1?$"{score[0]}:{score[1]}":$"점수: {score[0]}";
+        [SerializeField]
+        private TextMeshProUGUI textObject;
         
         [HideInInspector]
         public bool canHold = true;
@@ -59,6 +61,7 @@ namespace TAR
             maxPlayer = 1;
             this.map = new Map[1] { map };
             mask = 1 << LayerMask.NameToLayer("BaseBlock");
+            textObject.text = scoreText;
             isRunning = true;
         }
         public void Init(Map map1, Map map2)
@@ -67,6 +70,7 @@ namespace TAR
             maxPlayer = 2;
             this.map = new Map[2] { map1, map2 };
             mask = 1 << LayerMask.NameToLayer("BaseBlock");
+            textObject.text = scoreText;
             isRunning = true;
         }
 
@@ -207,7 +211,8 @@ namespace TAR
         {
             if( 0 > mapID || mapID >= maxPlayer) return;
             score[mapID]++;
-            // TODO: Update UI on score change
+            if(textObject != null)
+                textObject.text = scoreText;
         }
         public void PickItem(int mapID)
         {
