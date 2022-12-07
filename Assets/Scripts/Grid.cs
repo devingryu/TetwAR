@@ -18,6 +18,7 @@ namespace TAR
         private Transform baseParent;
         public void Init(Vector3Int bound, Map map)
         {
+            this.map = map;
             GridBound = bound;
             blocks = new Block[bound.x, bound.y, bound.z];
             var baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
