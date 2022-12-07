@@ -8,6 +8,9 @@ namespace TAR
 {
     public class Map : MonoBehaviour
     {
+        public int ID;
+        [SerializeField]
+        private bool isMulti = false;
         private Type[] blockGroups = {
             typeof(ABlockGroup),
             typeof(IBlockGroup),
@@ -26,16 +29,26 @@ namespace TAR
         private Transform blockParent;
         private List<Type> blockQueue = new(8);
         private Type holdBlock = null;
+        public Type HoldBlock => holdBlock;
         private int lastType = -1;
         private LineRenderer lr;
-
-        private void Start() {
+        
+        private void Start() 
+        {
+            if(!isMulti)
+                OnStart(0);
+        }
+        public void OnStart(int id)
+        {
+            ID = id;
             lr = GetComponent<LineRenderer>();
 
             gm = GameManager.Inst;
-            gm.Init(this);
-            grid.Init(new(5,15,5));
-            CreateNew();
+            if(!isMulti)
+                gm.Init(this);
+            grid.Init(new(5,15,5), this);
+            if(!isMulti)
+                CreateNew();
 
             var bound = grid.GridPositionBound;
             Vector3[] eightPoint = {
@@ -63,7 +76,7 @@ namespace TAR
                 FillQueue();
             current = (BlockGroup) Activator.CreateInstance(blockQueue[blockQueue.Count-1]);
             blockQueue.RemoveAt(blockQueue.Count-1);
-            current.Init(blockParent);
+            current.Init(blockParent,this);
         }
         public void DownOne()
             => current.DownOne();
@@ -93,7 +106,7 @@ namespace TAR
             {
                 current.Dispose();
                 current = (BlockGroup) Activator.CreateInstance(holdBlock);
-                current.Init(blockParent);
+                current.Init(blockParent,this);
                 holdBlock = temp;
             }
             return temp;

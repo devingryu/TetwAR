@@ -6,6 +6,7 @@ namespace TAR
 {
     public class Grid : MonoBehaviour
     {
+        private Map map;
         public Block[,,] blocks;
         public Vector3Int GridBound { get; private set; }
         public Vector3[] GridPositionBound { get; private set; }
@@ -15,7 +16,7 @@ namespace TAR
         private bool en = false;
         [SerializeField]
         private Transform baseParent;
-        public void Init(Vector3Int bound)
+        public void Init(Vector3Int bound, Map map)
         {
             GridBound = bound;
             blocks = new Block[bound.x, bound.y, bound.z];
@@ -27,11 +28,11 @@ namespace TAR
                 zeroPoint[i] = GridCenterPoint[i] - ((bound[i] % 2 == 0) ? (bound[i] / 2 - 0.5f) : (bound[i] / 2)) * BlockShape[i];
             GridZeroPoint = new Vector3(zeroPoint[0], BlockShape[1] * (bound.y - 1), zeroPoint[2]);
 
-            var rotation = GameManager.Inst.CMap.transform.rotation;
+            var rotation = map.transform.rotation;
             Color color = new Color32(74, 47, 0, 255);
             for (int i = 0; i < bound.x; i++)
                 for (int j = 0; j < bound.z; j++)
-                    Instantiate(baseBlock, Vector3.zero, rotation, baseParent).GetComponent<Block>().Init(new(i, bound.y, j), color, colliderEnabled: true);
+                    Instantiate(baseBlock, Vector3.zero, rotation, baseParent).GetComponent<Block>().Init(new(i, bound.y, j), color, map, colliderEnabled: true);
 
             GridPositionBound = new Vector3[2] {
                 Coord2Pos(new(0,bound.y-1,0))-BlockShape/2,
@@ -126,7 +127,7 @@ namespace TAR
                     }
                 }
             }
-            GameManager.Inst.Score++;
+            GameManager.Inst.ScoreIncrement(map.ID);
         }
     }
 }

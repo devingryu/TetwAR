@@ -28,6 +28,7 @@ namespace TAR
         protected virtual Color blockColor {get;set;} = Color.white;
         public Color _BlockColor => blockColor;
         protected Transform blockParent;
+        protected Map map;
         protected Grid grid;
         protected static Vector3Int[] rotationMargin = {Vector3Int.back,Vector3Int.forward,Vector3Int.left,Vector3Int.right};
         private bool isHintOnInit = false;
@@ -43,9 +44,10 @@ namespace TAR
             new(-1,1,1),new(-1,1,-1),new(-1,-1,1),new(-1,-1,-1)
             };
 
-        public void Init(Transform blockParent) 
+        public void Init(Transform blockParent, Map map) 
         {
-            grid = GameManager.Inst.CMap.grid;
+            this.map = map;
+            grid = map.grid;
             baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
             this.blockParent = blockParent;
             OnInit();
@@ -55,7 +57,7 @@ namespace TAR
             blocks = new List<Block>(InitCoords.Length);
             for(int i=0;i<InitCoords.Length;i++)
             {
-                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,currentBlock:true));
+                blocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,map,currentBlock:true));
             }
         }
         public void DownFull()
@@ -209,7 +211,7 @@ namespace TAR
                 hintBlocks = new List<Block>(InitCoords.Length);
                 for(int i=0;i<InitCoords.Length;i++)
                 {
-                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,isHint: true));
+                    hintBlocks.Add(GameObject.Instantiate(baseBlock, Vector3.zero, blockParent.rotation, blockParent).GetComponent<Block>().Init(CenterPos+InitCoords[i],blockColor,map,isHint: true));
                 }
             }
             var bestFit = GetBestFit(CameraPoint);

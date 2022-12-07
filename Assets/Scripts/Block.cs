@@ -6,6 +6,7 @@ namespace TAR
 {
     public class Block : MonoBehaviour
     {
+        public int mapID;
         private Vector3Int coord;
         public Vector3Int Coord {
             get => coord;
@@ -29,9 +30,10 @@ namespace TAR
                 //Debug.Log($"BoxCollider:{value}");
             }
         }
-        public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false, bool currentBlock = false)
+        public Block Init(Vector3Int coord, Color color, Map map, bool isHint = false, bool colliderEnabled = false, bool currentBlock = false)
         {
-            grid = GameManager.Inst.CMap.grid;
+            grid = map.grid;
+            mapID = map.ID;
             if(currentBlock && grid.GetBlocks(coord) != null)
                 GameManager.Inst.OnGameOver();
             Coord = coord;

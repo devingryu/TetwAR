@@ -40,14 +40,7 @@ namespace TAR
         public Map CMap => map[currentPlayer];
         
         private int[] score = {0,0};
-        public int Score {
-            get => score[currentPlayer];
-            set {
-                score[currentPlayer] = value;
-                var scoreText = maxPlayer>1?$"{score[0]}:{score[1]}":$"{score[0]}";
-                // TODO: Update UI on score change
-            }
-        }
+        private String scoreText => maxPlayer>1?$"{score[0]}:{score[1]}":$"{score[0]}";
         
         public bool canHold = true;
         private void Awake() 
@@ -83,10 +76,14 @@ namespace TAR
 
             if(Physics.Raycast(cam.position, cam.forward, out hit, 1000f, mask))
             {
+                var block = hit.transform.GetComponent<Block>();
+                if(block.mapID != currentPlayer) return;
+
                 var norm = hit.transform.InverseTransformDirection(hit.normal);
                 var v3i = Vector3Int.RoundToInt(norm);
                 if (v3i.sqrMagnitude != 1) return;
                 v3i = new(v3i.x,-v3i.y,v3i.z);
+
                 CMap.current.CameraPoint = hit.transform.GetComponent<Block>().Coord + v3i;
             }
         }
@@ -98,6 +95,7 @@ namespace TAR
             map[newPlayer].CreateNew();
             canHold = true;
             currentPlayer = newPlayer;
+            RefreshHoldImage();
         }
         [ContextMenu("XY회전")]
         public void XYClock()
@@ -170,11 +168,33 @@ namespace TAR
         {
             if(!isRunning || !canHold) return;
             canHold = false;
-            var holdType = CMap.BlockHold();
+            CMap.BlockHold();
             SoundManager.Inst.PlayEffect("ClickButton");
-            holdImage.sprite = holdSprites[spriteMapper[holdType]];
-            holdImage.enabled = true;
-            holdText.SetActive(false);
+            RefreshHoldImage();
+            // holdImage.sprite = holdSprites[spriteMapper[holdType]];
+            // holdImage.enabled = true;
+            // holdText.SetActive(false);
+        }
+        private void RefreshHoldImage()
+        {
+            var holdBlockType = CMap.HoldBlock;
+            if(holdBlockType == null)
+            {
+                holdImage.enabled = false;
+                holdText.SetActive(true);
+            }
+            else
+            {
+                holdImage.sprite = holdSprites[spriteMapper[holdBlockType]];
+                holdImage.enabled = true;
+                holdText.SetActive(false);
+            }
+        }
+        public void ScoreIncrement(int mapID)
+        {
+            if( 0 > mapID || mapID >= maxPlayer) return;
+            score[mapID]++;
+            // TODO: Update UI on score change
         }
     }
 }
