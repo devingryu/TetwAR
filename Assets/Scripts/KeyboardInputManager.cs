@@ -24,20 +24,20 @@ namespace TAR
             } if(Input.GetKeyDown(KeyCode.C)) {
                 gm.XZClock();
             } if(Input.GetKeyDown(KeyCode.Space)) {
-                gm.map.current.DownFull();
+                gm.CMap.current.DownFull();
             }
 
             tTimer += Time.deltaTime;
             if((tTimer = tTimer>tTimerTarget?tTimerTarget:tTimer)<tTimerTarget) return;
             tTimer = 0f;
             if (Input.GetKey(KeyCode.UpArrow)) {
-                gm.map.current.Translate(Vector3Int.forward);
+                gm.CMap.current.Translate(Vector3Int.forward);
             } if (Input.GetKey(KeyCode.RightArrow)) {
-                gm.map.current.Translate(Vector3Int.right);
+                gm.CMap.current.Translate(Vector3Int.right);
             } if (Input.GetKey(KeyCode.DownArrow)) {
-                gm.map.current.Translate(Vector3Int.back);
+                gm.CMap.current.Translate(Vector3Int.back);
             } if (Input.GetKey(KeyCode.LeftArrow)) {
-                gm.map.current.Translate(Vector3Int.left);
+                gm.CMap.current.Translate(Vector3Int.left);
             }
         }
     }

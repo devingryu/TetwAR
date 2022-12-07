@@ -31,7 +31,7 @@ namespace TAR
         }
         public Block Init(Vector3Int coord, Color color, bool isHint = false, bool colliderEnabled = false, bool currentBlock = false)
         {
-            grid = GameManager.Inst.map.grid;
+            grid = GameManager.Inst.CMap.grid;
             if(currentBlock && grid.GetBlocks(coord) != null)
                 GameManager.Inst.OnGameOver();
             Coord = coord;

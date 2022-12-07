@@ -27,7 +27,7 @@ namespace TAR
                 zeroPoint[i] = GridCenterPoint[i] - ((bound[i] % 2 == 0) ? (bound[i] / 2 - 0.5f) : (bound[i] / 2)) * BlockShape[i];
             GridZeroPoint = new Vector3(zeroPoint[0], BlockShape[1] * (bound.y - 1), zeroPoint[2]);
 
-            var rotation = GameManager.Inst.map.transform.rotation;
+            var rotation = GameManager.Inst.CMap.transform.rotation;
             Color color = new Color32(74, 47, 0, 255);
             for (int i = 0; i < bound.x; i++)
                 for (int j = 0; j < bound.z; j++)

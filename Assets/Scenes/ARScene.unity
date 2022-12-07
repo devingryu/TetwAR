@@ -1813,11 +1813,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 393977427}
-  text: {fileID: 0}
-  map: {fileID: 0}
-  holdImage: {fileID: 2007693421}
   holdText: {fileID: 1086311947}
+  holdImage: {fileID: 2007693421}
   isRunning: 0
+  map: []
+  canHold: 1
 --- !u!4 &1357905558
 Transform:
   m_ObjectHideFlags: 0

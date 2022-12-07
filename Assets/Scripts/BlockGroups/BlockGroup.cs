@@ -45,7 +45,7 @@ namespace TAR
 
         public void Init(Transform blockParent) 
         {
-            grid = GameManager.Inst.map.grid;
+            grid = GameManager.Inst.CMap.grid;
             baseBlock = ResourceDictionary.Get<GameObject>("Prefabs/BaseBlock");
             this.blockParent = blockParent;
             OnInit();
