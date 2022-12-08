@@ -14,6 +14,7 @@ namespace TAR
         private Vector3 GridZeroPoint; // 좌하단이 Zero
         private Vector3 BlockShape;
         private bool en = false;
+        private int score = 1;
         [SerializeField]
         private Transform baseParent;
         public void Init(Vector3Int bound, Map map)
@@ -82,8 +83,12 @@ namespace TAR
             for (int i = 0; i < GridBound.y; i++)
             {
                 if (CheckFloor(i))
+                {
                     RemoveFloor(i);
+                    score++;
+                }
             }
+            score = 1;
         }
 
         public bool CheckFloor(int y)
@@ -111,7 +116,7 @@ namespace TAR
             }
             SoundManager.Inst.PlayEffect("BreakFloor");
             GameManager.Inst.PickItem(map.ID);
-            GameManager.Inst.ScoreIncrement(map.ID);
+            GameManager.Inst.ScoreIncrement(map.ID, score);
             DownUpperFloor(y);
         }
 

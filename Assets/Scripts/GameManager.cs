@@ -209,10 +209,10 @@ namespace TAR
                 holdText.SetActive(false);
             }
         }
-        public void ScoreIncrement(int mapID)
+        public void ScoreIncrement(int mapID, int val)
         {
             if( 0 > mapID || mapID >= maxPlayer) return;
-            score[mapID]++;
+            score[mapID] = score[mapID] + val;
             if(textObject != null)
                 textObject.text = scoreText;
         }
