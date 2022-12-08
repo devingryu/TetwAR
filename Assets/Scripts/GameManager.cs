@@ -29,7 +29,9 @@ namespace TAR
             {typeof(LBlockGroup),2},
             {typeof(SquareBlockGroup),4},
             {typeof(TFBlockGroup),5},
-            {typeof(SBlockGroup),3}
+            {typeof(SBlockGroup),3},
+            {typeof(TBlockGroup),6},
+            {typeof(TIBlockGroup),7},
         };
         [HideInInspector]
         public bool isRunning = false;
