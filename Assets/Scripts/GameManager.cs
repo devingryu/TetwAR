@@ -27,9 +27,9 @@ namespace TAR
             {typeof(ABlockGroup),0},
             {typeof(IBlockGroup),1},
             {typeof(LBlockGroup),2},
-            {typeof(SquareBlockGroup),4},
-            {typeof(TFBlockGroup),5},
-            {typeof(SBlockGroup),3},
+            {typeof(SquareBlockGroup),3},
+            {typeof(TFBlockGroup),4},
+            {typeof(SBlockGroup),5},
             {typeof(TBlockGroup),6},
             {typeof(TIBlockGroup),7},
         };
