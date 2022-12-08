@@ -10,13 +10,13 @@ namespace TAR
     {
         [SerializeField]
         private TMP_Text t;
-        
-        public void SetText(int gameOverPlayer)
+        [SerializeField]
+        private GameManager gm;
+
+
+        public void SetText(string text)
         {
-            if (gameOverPlayer == -1)
-                t.text = "Game Over";
-            else 
-                t.text = $"Player {2-(1*gameOverPlayer)} win!";            
+            t.text = text;        
         }
         public void MainMenu()
         {
@@ -26,6 +26,11 @@ namespace TAR
         public void Quit()
         {
             Application.Quit();
+        }
+        public void Resume()
+        {
+            gm.isRunning = true;
+            this.gameObject.SetActive(false);
         }
     }
 }

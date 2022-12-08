@@ -19,6 +19,8 @@ namespace TAR
         [SerializeField]
         private GameObject gameOverUI;
         [SerializeField]
+        private GameObject nextTurnUI;
+        [SerializeField]
         private ItemButton itemButton;
         private float timer = 0f;
         private float targetTime = 2f;
@@ -110,6 +112,12 @@ namespace TAR
             currentPlayer = newPlayer;
             RefreshHoldImage();
             RefreshItemImage();
+            if (maxPlayer == 2)
+            {
+                isRunning = false;
+                nextTurnUI.gameObject.SetActive(true);
+                nextTurnUI.GetComponent<GameOverUI>().SetText($"Player {currentPlayer + 1}");
+            }
         }
         [ContextMenu("XY회전")]
         public void XYClock()
@@ -179,9 +187,9 @@ namespace TAR
             isRunning = false;
             gameOverUI.gameObject.SetActive(true);
             if (maxPlayer == 1)
-                gameOverUI.GetComponent<GameOverUI>().SetText(-1);
+                gameOverUI.GetComponent<GameOverUI>().SetText("Game Over");
             else
-                gameOverUI.GetComponent<GameOverUI>().SetText(gameOverPlayer);
+                gameOverUI.GetComponent<GameOverUI>().SetText($"Player {2 - (1 * gameOverPlayer)} win!");
         }
         public void BlockHold()
         {
